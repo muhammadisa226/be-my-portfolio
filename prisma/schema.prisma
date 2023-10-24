@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Portfolio {
+  id           String   @id @default(uuid())
+  title        String   @db.VarChar(100)
+  description  String   @db.Text
+  link_project String   @db.VarChar(100)
+  image        String   @db.VarChar(100)
+  url_image    String   @db.Text
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now())
+
+  @@map("portfolio")
+}
+
+model Skill {
+  id         String   @id @default(uuid())
+  title      String   @db.VarChar(100)
+  image      String   @db.VarChar(100)
+  url_image  String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("skill")
+}
