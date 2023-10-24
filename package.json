@@ -1,0 +1,23 @@
+{
+  "name": "backend-myportfolio",
+  "version": "1.0.0",
+  "description": "backend api for my_portfolio",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhammadisa226/be-my-portfolio.git"
+  },
+  "keywords": [
+    "backend",
+    "portfolio"
+  ],
+  "author": "Muhammad Isa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muhammadisa226/be-my-portfolio"
+  },
+  "homepage": "https://github.com/muhammadisa226/be-my-portfolio#readme"
+}
