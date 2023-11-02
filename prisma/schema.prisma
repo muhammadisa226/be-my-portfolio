@@ -33,3 +33,15 @@ model Skill {
 
   @@map("skill")
 }
+
+model User {
+  id           String  @id @default(uuid())
+  name         String  @db.VarChar(100)
+  email        String  @db.VarChar(100)
+  password     String  @db.Text
+  access_token String? @db.Text
+  profile      String? @db.VarChar(100)
+  url_profile  String? @db.Text
+
+  @@map("users")
+}
