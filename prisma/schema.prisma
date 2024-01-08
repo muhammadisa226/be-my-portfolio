@@ -11,37 +11,89 @@ datasource db {
 }
 
 model Portfolio {
-  id           String   @id @default(uuid())
-  title        String   @db.VarChar(100)
-  description  String   @db.Text
-  link_project String   @db.VarChar(100)
-  image        String   @db.VarChar(100)
-  url_image    String   @db.Text
-  created_at   DateTime @default(now())
-  updated_at   DateTime @default(now())
+  id           String       @id @default(uuid())
+  title        String       @db.VarChar(100)
+  description  String       @db.Text
+  link_project String?      @db.VarChar(100)
+  link_demo    String?      @db.VarChar(100)
+  image        String       @db.VarChar(100)
+  url_image    String       @db.Text
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @default(now())
+  technologies Technology[]
 
-  @@map("portfolio")
+  @@map("portfolios")
+}
+
+enum TypeSkill {
+  Frontend
+  Backend
+  Other
 }
 
 model Skill {
-  id         String   @id @default(uuid())
-  title      String   @db.VarChar(100)
-  image      String   @db.VarChar(100)
-  url_image  String   @db.Text
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  id         String    @id @default(uuid())
+  name       String    @db.VarChar(100)
+  type       TypeSkill @default(Other)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
 
-  @@map("skill")
+  @@map("skills")
+}
+
+model Experience {
+  id         String    @id @default(uuid())
+  title      String    @db.VarChar(100)
+  duration   String    @db.VarChar(100)
+  year       String    @db.VarChar(100)
+  details    String?   @db.VarChar(255)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("experiences")
+}
+
+model Education {
+  id         String    @id @default(uuid())
+  title      String    @db.VarChar(100)
+  year       String    @db.VarChar(100)
+  details    String?   @db.VarChar(255)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("educations")
 }
 
 model User {
-  id           String  @id @default(uuid())
-  name         String  @db.VarChar(100)
-  email        String  @db.VarChar(100)
-  password     String  @db.Text
-  access_token String? @db.Text
-  profile      String? @db.VarChar(100)
-  url_profile  String? @db.Text
+  id           String    @id @default(uuid())
+  name         String    @db.VarChar(100)
+  email        String    @db.VarChar(100)
+  password     String    @db.Text
+  access_token String?   @db.Text
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @default(now())
 
   @@map("users")
+}
+
+model Tool {
+  id         Int          @id @default(autoincrement())
+  title      String       @db.VarChar(100)
+  image      String       @db.VarChar(100)
+  image_url  String       @db.VarChar(255)
+  created_at DateTime?    @default(now())
+  updated_at DateTime?    @default(now())
+  technology Technology[]
+
+  @@map("tools_and_language")
+}
+
+model Technology {
+  portfolio_id String
+  tool_id      Int
+  portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+  tools        Tool      @relation(fields: [tool_id], references: [id])
+
+  @@id([portfolio_id, tool_id])
+  @@map("technologies")
 }

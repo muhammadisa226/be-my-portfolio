@@ -14,4 +14,7 @@ skillRouter.get("/skills/:id", getSkillById)
 skillRouter.post("/skills", verifyToken, createSkill)
 skillRouter.put("/skills/:id", verifyToken, updateSkill)
 skillRouter.delete("/skills/:id", verifyToken, deleteSkill)
+// skillRouter.post("/skills",  createSkill)
+// skillRouter.put("/skills/:id",  updateSkill)
+// skillRouter.delete("/skills/:id",  deleteSkill)
 export default skillRouter

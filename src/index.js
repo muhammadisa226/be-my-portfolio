@@ -15,5 +15,5 @@ app.use(fileUpload())
 app.use(express.static("public"))
 app.use(router)
 app.listen(port, () => {
-  console.log(`Server is Running  `)
+  console.log(`Server is Running on port ${port} `)
 })

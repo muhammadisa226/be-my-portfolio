@@ -1,24 +1,22 @@
 import prisma from "../utils/prisma.js"
 import {
-  createSkillValidation,
-  SkillIdValidation,
-  updateSkillValidation,
-} from "../validation/SkillValidation.js"
-export const getAllSkill = async (req, res) => {
-  let typeSkill = req.query.type
+  EducationIdValidation,
+  createEduValidation,
+  updateEduValidation,
+} from "../validation/EducationValidation.js"
+export const getAllEducation = async (req, res) => {
   try {
-    const data = await prisma.skill.findMany({
-      where: { type: typeSkill },
+    const data = await prisma.education.findMany({
       orderBy: { created_at: "asc" },
     })
     if (data.length === 0)
       return res.status(200).json({
-        msg: "Data Skill is Empty",
+        msg: "Data Educations is Empty",
         data,
         totaldata: data.length,
       })
     res.status(200).json({
-      msg: "All Data Skill Found",
+      msg: "All Data Educations Found",
       data,
       totaldata: data.length,
     })
@@ -26,8 +24,8 @@ export const getAllSkill = async (req, res) => {
     res.status(500).json({ msg: error.message })
   }
 }
-export const getSkillById = async (req, res) => {
-  const validate = SkillIdValidation.validate(req.params.id, {
+export const getEducationById = async (req, res) => {
+  const validate = EducationIdValidation.validate(req.params.id, {
     // abortEarly: false,
     allowUnknown: false,
   })
@@ -36,21 +34,21 @@ export const getSkillById = async (req, res) => {
     return res.status(400).json({ message: `${errors}` })
   }
   try {
-    const data = await prisma.skill.findUnique({
+    const data = await prisma.education.findUnique({
       where: {
         id: validate.value,
       },
     })
 
     if (!data) return res.status(200).json({ msg: "Data Not Found", data })
-    res.status(200).json({ msg: "Data Skill Found", data })
+    res.status(200).json({ msg: "Data Education Found", data })
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
 }
-export const createSkill = async (req, res) => {
-  const { name, type } = req.body
-  const validate = createSkillValidation.validate(req.body, {
+export const createEducation = async (req, res) => {
+  const { title, year, details } = req.body
+  const validate = createEduValidation.validate(req.body, {
     // abortEarly: false,
     allowUnknown: false,
   })
@@ -58,26 +56,27 @@ export const createSkill = async (req, res) => {
     let errors = validate.error.message
     return res.status(400).json({ message: `${errors}` })
   }
-  const datenow = new Date()
   try {
-    await prisma.skill.create({
+    await prisma.education.create({
       data: {
-        name,
-        type,
+        title,
+        year,
+        details,
       },
     })
-    res.status(201).json({ msg: "Skill Created" })
+    res.status(201).json({ msg: "Education Created" })
   } catch (error) {
     return res.status(400).json({ message: error.message })
   }
 }
-export const updateSkill = async (req, res) => {
+export const updateEducation = async (req, res) => {
   const datavalidate = {
     id: req.params.id,
-    name: req.body.name,
-    type: req.body.type,
+    title: req.body.title,
+    year: req.body.year,
+    details: req.body.details,
   }
-  const validate = updateSkillValidation.validate(datavalidate, {
+  const validate = updateEduValidation.validate(datavalidate, {
     // abortEarly: false,
     allowUnknown: false,
   })
@@ -85,29 +84,32 @@ export const updateSkill = async (req, res) => {
     let errors = validate.error.message
     return res.status(400).json({ message: `${errors}` })
   }
-  const skill = await prisma.skill.findUnique({
+  const education = await prisma.education.findUnique({
     where: { id: validate.value.id },
   })
-  if (!skill)
-    return res.status(404).json({ message: "Skill not found", data: skill })
+  if (!education)
+    return res
+      .status(404)
+      .json({ message: "Education not found", data: education })
 
   const datenow = new Date()
   try {
-    const data = await prisma.skill.update({
+    const data = await prisma.education.update({
       where: { id: validate.value.id },
       data: {
-        name: validate.value.name,
-        type: validate.value.type,
+        title: validate.value.title,
+        year: validate.value.year,
+        details: validate.value.details,
         updated_at: datenow,
       },
     })
-    res.status(200).json({ msg: "Skill Updated", data })
+    res.status(200).json({ msg: "Education Updated", data })
   } catch (error) {
     console.log(error.message)
   }
 }
-export const deleteSkill = async (req, res) => {
-  const validate = SkillIdValidation.validate(req.params.id, {
+export const deleteEducation = async (req, res) => {
+  const validate = EducationIdValidation.validate(req.params.id, {
     // abortEarly: false,
     allowUnknown: false,
   })
@@ -115,16 +117,17 @@ export const deleteSkill = async (req, res) => {
     let errors = validate.error.message
     return res.status(400).json({ message: `${errors}` })
   }
-  const skill = await prisma.skill.findUnique({
+  const education = await prisma.education.findUnique({
     where: { id: validate.value },
   })
-  if (!skill) return res.status(404).json({ message: "Skill not found" })
+  if (!education)
+    return res.status(404).json({ message: "Education not found" })
   try {
-    const data = await prisma.skill.delete({
+    const data = await prisma.education.delete({
       where: { id: validate.value },
     })
-    const totaldata = await prisma.skill.count()
-    res.status(200).json({ msg: "Skill Deleted", data, totaldata })
+    const totaldata = await prisma.education.count()
+    res.status(200).json({ msg: "Education Deleted", data, totaldata })
   } catch (error) {
     console.log(error.message)
   }

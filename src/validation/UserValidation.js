@@ -10,13 +10,6 @@ export const EditUserValidation = Joi.object({
     "string.empty": "Field name must be filled in",
     "string.max": "Field email max 100 character",
   }),
-  profile: Joi.string().optional().max(100).messages({
-    "string.empty": "Field name must be filled in",
-    "string.max": "Field email max 100 character",
-  }),
-  url_profile: Joi.string().optional().messages({
-    "string.empty": "Field name must be filled in",
-  }),
 })
 export const changePasswordValidation = Joi.object({
   password: Joi.string().required().min(8).messages({

@@ -4,5 +4,5 @@ import { verifyToken } from "../middleware/AuthMIddleware.js"
 const authRouter = express.Router()
 authRouter.post("/auth/register", Register)
 authRouter.post("/auth/login", Login)
-authRouter.post("/auth/logout", verifyToken, logout)
+authRouter.delete("/auth/logout", verifyToken, logout)
 export default authRouter
